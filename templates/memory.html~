@@ -48,17 +48,28 @@
 
 <div id="gameMode" class="gameModeDialog">
 	<div>
-		<a href="#" title="Close" class="close">X</a>
+		<a href="#" title="Close" class="close" id="closeB">X</a>
 		<h2>Player Mode</h2>
 		<div>
 			
-			<a href="#" id="" class="rollable-link">
+			<a href="#" id="singlePlayerB" class="rollable-link">
 			<span data-title="Single Player">Single Player</span>
 			</a>
-			<a href="#" id="" class="rollable-link">
-			<span data-title="Two Playe">Two Player</span>
+			<a href="#" id="twoPlayerB" class="rollable-link">
+			<span data-title="Two Player">Two Player</span>
 			</a>
 			
+		</div>
+		</div>
+</div>
+
+<div id="playerNameD" class="gameModeDialog">
+	<div>
+		<h2>Player One Name</h2>
+		<div>
+					<input type="text" id="playerOneName"  value="Player One Name..." onfocus="if (this.value == 'Player One Name...'){this.value = '';}" onblur="if (this.value == '') {this.value = 'Player One Name...';}"></input>
+					<input type="text" id="playerTwoName"  value="Player Two Name..." onfocus="if (this.value == 'Player Two Name...'){this.value = '';}" onblur="if (this.value == '') {this.value = 'Player Two Name...';}"></input>
+					<input type="button" id="submitMultiName" value="Submit">	<input>
 		</div>
 		</div>
 </div>
