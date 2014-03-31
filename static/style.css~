@@ -129,7 +129,7 @@ height:100%;
 	border-radius: 10px;
 	background: #fff;
 	background: -moz-linear-gradient(#fff, #246CB9);
-	background: -webkit-linear-gradient(#fff, #246CB9, #fff);
+	background: -webkit-linear-gradient(#246CB9, #fff);
 	background: -o-linear-gradient(#fff, #246CB9);
 }
 

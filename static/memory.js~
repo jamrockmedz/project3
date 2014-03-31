@@ -113,11 +113,11 @@ function save()
 
 function setUpSinglePlayerMode()
 {
-		alert("Single Player Mode");
+		
 }
 
 function setUpTwoPlayerMode(){
-		alert("Two Player Mode");
+	
 	
 	}
 
