@@ -1,3 +1,24 @@
+#scoreBoard
+{
+	width: 200px;
+	height:100px;
+	text-align: center;
+	position: absolute;
+	padding: 5px 20px 13px 20px;
+	border-radius: 10px;
+	background: #fff;	
+	float: right;
+}
+
+#playerOneScore, #playerTwoScore, #turnArea, #winner
+{
+	border-radius: 10px;
+	border: solid black 1px;
+	height: 20px;
+	margin: auto;
+	vertical-align: middle;
+}
+
 #changeGameMode{
 	float: right;
 	display: block;
@@ -129,7 +150,7 @@ height:100%;
 	border-radius: 10px;
 	background: #fff;
 	background: -moz-linear-gradient(#fff, #246CB9);
-	background: -webkit-linear-gradient(#246CB9, #fff);
+	background: -webkit-linear-gradient(#fff, #246CB9, #fff);
 	background: -o-linear-gradient(#fff, #246CB9);
 }
 

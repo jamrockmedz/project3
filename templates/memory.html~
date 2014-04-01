@@ -45,7 +45,13 @@
 
 <div class="clear"></div>
 <div id = "content">
+<div id="scoreBoard">
 
+	<div id="playerOneScore"></div>
+	<div id="playerTwoScore></div>
+	<div id="turnArea"></div>
+
+</div>
 <div id="gameMode" class="gameModeDialog">
 	<div>
 		<a href="#" title="Close" class="close" id="closeB">X</a>
@@ -69,7 +75,7 @@
 		<div>
 					<input type="text" id="playerOneName"  value="Player One Name..." onfocus="if (this.value == 'Player One Name...'){this.value = '';}" onblur="if (this.value == '') {this.value = 'Player One Name...';}"></input>
 					<input type="text" id="playerTwoName"  value="Player Two Name..." onfocus="if (this.value == 'Player Two Name...'){this.value = '';}" onblur="if (this.value == '') {this.value = 'Player Two Name...';}"></input>
-					<input type="button" id="submitMultiName" value="Submit">	<input>
+					<input type="button" id="submitMultiName" value="Submit"/>
 		</div>
 		</div>
 </div>

@@ -41,16 +41,22 @@ function newGame()
 
 function loadGame()
 {
-    var gameData = JSON.parse(localStorage.getItem("savedGame"));
-   
+   var gameData = JSON.parse(localStorage.getItem("savedGame"));
+      
    numTries = gameData[0];   
 	currentGame.innerHTML = gameData[1];
 	P = gameData[2];
-	gameMode = gameData[3];
-	playerTurn = gameData[4];
-	if(isMultiPlayer)
+	if(gameMode > 1)
 	{
-		
+		var temp1 = JSON.parse(localStorage.getItem("playerOne"));
+   	var temp2 = JSON.parse(localStorage.getItem("playerTwo"));
+   	playerOne[0] = temp1[0];
+   	playerTwo[0] = temp2[0];
+   	playerOne[1] = temp1[1];
+   	playerTwo[1] = temp2[1];
+		gameMode = gameData[3];
+		playerTurn = gameData[4];
+		document.getElementById("flip-back").innerHTML = "" + playerOne[0] + " VS" +  playerTwo[0];
 	}
 	else
 	{
@@ -131,6 +137,16 @@ function savePlayersName()
 			playerTwo[0] = "Player Two";
 		}
 		
+		
+		if(playerTurn > 1)
+		{	
+			document.getElementById("turnArea").innerHTML = playerTwo[0] + " turn!!!";
+		}
+		else
+		{
+			document.getElementById("turnArea").innerHTML = playerOne[0] + " turn!!!";
+		}
+		
 		saveMPlayerDataToStorage();
 		
 		hideMenu(document.getElementById("playerNameD"));
@@ -185,6 +201,7 @@ function hideMenu(menu)
 function setUpSinglePlayerMode()
 {
 	hideMenu(document.getElementById("gameMode"));	
+	document.getElementById("scoreBoard").style.display = "node";
 	gameMode = 1;	
 	createSinglePlayerGame();
 }
@@ -196,6 +213,7 @@ function setUpTwoPlayerMode(){
 		displayGameModeMenu(document.getElementById("playerNameD"));
 		gameMode = 2;
 		createTwoPlayerGame();
+		document.getElementById("scoreBoard").style.display = "inherit";
 			
 	}
 	
@@ -212,14 +230,7 @@ function setUpTwoPlayerMode(){
 		playerTwo[1] = 0;
 		playerTurn = Math.floor(2*Math.random())+1;
 		
-		if(playerTurn > 1)
-		{	
-			alert("Player 2 turn");
-		}
-		else
-		{
-			alert("Player 1 turn");
-		}
+		
 		turnState = 0;
 		 
    	if(!localStorage.savedGame)
@@ -230,6 +241,7 @@ function setUpTwoPlayerMode(){
 		{ 
 	   	 loadGame(); 
 		}
+		
 	}
 	
 	//creates a single player game
@@ -328,6 +340,56 @@ function R(a)
     return a.splice(0|a.length*Math.random(),1)[0];
 }
 
+function announceWinner()
+{
+	if(playerOne[1] > playerTwo[1])
+	{
+		document.getElementById("winner").innerHTML = "" + playerOne[0] + " WON!!!";
+	}
+	else
+	{
+		document.getElementById("winner").innerHTML = "" + playerTwo[0] + " WON!!!";
+	}
+}
+function changePlayer()
+{
+	if(playerTurn > 1)
+	{
+		playerTurn = 1;	
+	} 
+	else
+	{
+		playerTurn = 2;
+	}
+	turnState = 0;
+	
+	if(playerTurn > 1)
+		{	
+		document.getElementById("turnArea").innerHTML = playerTwo[0] + " turn!!!";
+		}
+		else
+		{
+			document.getElementById("turnArea").innerHTML = playerOne[0] + " turn!!!";
+		}
+		flash();
+		//alert("Player Changed");
+}
+
+
+function updateScoreBoard()
+{
+	if(playerTurn > 1)
+	{
+		playerTwo[1]++;
+	}
+	else
+	{
+		playerOne[1]++;
+	}
+	document.getElementById("playerOneScore").innerHTML = "" + playerOne[0] +" Score: " + playerOne[1];
+	document.getElementById("playerTwoScore").innerHTML = "" + playerTwo[0] +" Score: " + playerTwo[1];
+	
+}
 
 
     /*
@@ -341,11 +403,11 @@ function R(a)
     {
       if(numTries > 0 || gameMode > 1)
 		{	
-		
-			if(gameMode > 1 && turnState < 2)
-			{
-				turnState ++;
-			}
+			//check if multiplayer and less than two flips		
+			//if(gameMode > 1 && turnState < 2)
+			//{
+			//	turnState ++;
+			//}
 			
 			var paired = false;
 			for(var i = 0; i < pairedCards.length; i++)			
@@ -359,18 +421,22 @@ function R(a)
 			
 			if(!paired)
 			{
+				//get all visible cards 
 				var visibleCards = currentGame.querySelectorAll(".v");
-			
+				
+				
 				var x = visibleCards[0];
 				var y = visibleCards[1];
 				
+				//if no visible card just flip current card (t)
 				if(visibleCards.length  == 0)
 				{
-					flipSound.play();
-					
+					flipSound.play();					
 					changeClassName(t,"v");
+					if(gameMode > 1){turnState++;}
 					updateTries();
 				}
+				//if one visible card present already
 				else if(visibleCards.length  == 1)
 				{
 					if(x != t)
@@ -379,10 +445,12 @@ function R(a)
 						changeClassName(t,"v");
 						
 						updateTries();
-						
+						if(gameMode > 1){turnState++;}
 						if(x.innerHTML == t.innerHTML)
 						{
+							//if current card match with with visible card player retain turn
 							match.play();
+							if(gameMode > 1){turnState = 0;updateScoreBoard();}
 							changeClassName(x,"p");
 							changeClassName(t,"p");
 							pairedCards.push(x);
@@ -391,13 +459,16 @@ function R(a)
 						}
 					}
 					else
-					{
+					{	
+						//if(gameMode > 1){turnState++;}
 						changeClassName(x,"");
 					}
 				
 				}
+				//checks if two cards already visible
 				else if(visibleCards.length  == 2)
 				{
+					//checks if the card clicked was not a visible card
 					if(x != t && y != t)
 					{
 						flipSound.play();
@@ -413,8 +484,11 @@ function R(a)
 						changeClassName(y,"");
 					}
 					
+					if(gameMode > 1){turnState++;}
+					
 				}
 				
+				if(gameMode > 1 && turnState > 1){changePlayer();}
 				if(!P)
 				{
 					if(gameMode < 2)
@@ -423,7 +497,7 @@ function R(a)
 					}
 					else
 					{
-						
+						announceWinner();
 					}
 					applause.play();
 				}
@@ -489,5 +563,13 @@ function displayDeck()
     // add it to the DOM
 	
     currentGame.innerHTML = deckArea +'</div>';
+
+}
+
+function flash(){
+    var f = document.getElementById('turnArea');
+    setInterval(function() {
+        f.style.display = (f.style.backgroundColor == 'red' ? '' : 'red');
+    }, 100);
 
 }
