@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 
 <!-- manifest={{ url_for('static', filename='offline.manifest') }} type="text/cache-manifest" -->
-<html lang="en">
+<html lang="en" manifest={{ url_for('static', filename='offline.manifest') }} type="text/cache-manifest >
 <head>
     <meta charset="utf-8" />
     <title>Memory Game</title>
@@ -45,13 +45,16 @@
 
 <div class="clear"></div>
 <div id = "content">
+
 <div id="scoreBoard">
 
 	<div id="playerOneScore"></div>
-	<div id="playerTwoScore></div>
+	<div id="playerTwoScore"></div>
 	<div id="turnArea"></div>
+	<div id="winner"></div>
 
 </div>
+
 <div id="gameMode" class="gameModeDialog">
 	<div>
 		<a href="#" title="Close" class="close" id="closeB">X</a>

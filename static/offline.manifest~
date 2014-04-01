@@ -3,7 +3,6 @@ CACHE MANIFEST
 CACHE:
 
 memory.css
-style.css
 memory.js
 nav.js
 jquery.js
