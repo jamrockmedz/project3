@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 
 <!-- manifest={{ url_for('static', filename='offline.manifest') }} type="text/cache-manifest" -->
-<html lang="en" manifest={{ url_for('static', filename='offline.manifest') }} type="text/cache-manifest" >
+<html lang="en" >
 <head>
     <meta charset="utf-8" />
     <title>Memory Game</title>
@@ -47,11 +47,15 @@
 <div id = "content">
 
 <div id="scoreBoard">
-
-	<div id="playerOneScore"></div>
-	<div id="playerTwoScore"></div>
-	<div id="turnArea"></div>
-	<div id="winner"></div>
+	<div id="area">
+		<div id="playerOneScore"></div>
+		<div id="playerTwoScore"></div>
+		<div id="turnArea">
+			<div id="playerOneTurn">Player 1</div>
+			<div id="playerTwoTurn">Player 2</div>		
+		</div>
+		<div id="winner"></div>
+	</div>
 
 </div>
 
@@ -74,6 +78,7 @@
 
 <div id="playerNameD" class="gameModeDialog">
 	<div>
+		<a href="#" title="Close" class="close" id="closePlayerNameD">X</a>
 		<h2>Player One Name</h2>
 		<div>
 					<input type="text" id="playerOneName"  value="Player One Name..." onfocus="if (this.value == 'Player One Name...'){this.value = '';}" onblur="if (this.value == '') {this.value = 'Player One Name...';}"></input>

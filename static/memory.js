@@ -6,6 +6,7 @@ var currentGame;
 var gameMode;
 var q;
 var turnState;
+var gameOver
 
 
 //single player data
@@ -17,6 +18,8 @@ var P;
 var playerOne = [];
 var playerTwo = []; 
 var playerTurn;
+var playerOneTurn;
+var playerTwoTurn;
 
 function attachEvent(element, type, handler)
 {
@@ -30,33 +33,53 @@ function newGame()
 {
     generateDeck();
     displayDeck();
-    numTries = 24;
+    if(gameMode > 1)
+    {
+    	playerTurn = Math.floor(2*Math.random())+1;
+    	playerOne[1] = 0;
+    	playerTwo[1] = 0;
+    	turnState = 0;
+    	document.getElementById("playerOneScore").innerHTML = "";
+		document.getElementById("playerTwoScore").innerHTML = "";
+    	updatePlayer();
+    }
+    else
+    {
+    	numTries = 24;
+    	document.getElementById("flip-back").innerHTML = "You have " + numTries + " flips!";
+    }
+    
     pairedCards = [];
+    gameOver = 1;
     localStorage.removeItem("savedGame");
     localStorage.removeItem("pairs");
-	document.getElementById("flip-back").innerHTML = "You have " + numTries + " flips!";
-	document.getElementById("flip-front").innerHTML = "<h1>Memory Card Game</h1>";
+	 document.getElementById("flip-front").innerHTML = "<h1>Memory Card Game</h1>";
 }
 
 
 function loadGame()
 {
    var gameData = JSON.parse(localStorage.getItem("savedGame"));
-      
+   gameOver = 1;
    numTries = gameData[0];   
 	currentGame.innerHTML = gameData[1];
+	
+	gameMode = gameData[3];
+	
 	P = gameData[2];
 	if(gameMode > 1)
 	{
 		var temp1 = JSON.parse(localStorage.getItem("playerOne"));
    	var temp2 = JSON.parse(localStorage.getItem("playerTwo"));
+   	
    	playerOne[0] = temp1[0];
    	playerTwo[0] = temp2[0];
    	playerOne[1] = temp1[1];
    	playerTwo[1] = temp2[1];
-		gameMode = gameData[3];
 		playerTurn = gameData[4];
-		document.getElementById("flip-back").innerHTML = "" + playerOne[0] + " VS" +  playerTwo[0];
+		turnState = gameData[5];
+		document.getElementById("flip-back").innerHTML = "" + playerOne[0] + " VS " +  playerTwo[0];
+		updatePlayer();
 	}
 	else
 	{
@@ -99,6 +122,8 @@ function setup()
 	attachEvent(document.getElementById("closeB"), "click", closeMenu);
 	attachEvent(document.getElementById("changeGameMode"), "click", changeGameMode);
 	attachEvent(document.getElementById("submitMultiName"), "click", savePlayersName);
+	attachEvent(document.getElementById("closePlayerNameD"), "click", closePlayerMenu);
+	
 		
 	
 	if(localStorage.playerName)
@@ -111,9 +136,31 @@ function setup()
   }
   
   displayGameModeMenu(document.getElementById("gameMode"));
+  playerOneTurn = document.getElementById("playerOneTurn");
+  playerTwoTurn = document.getElementById("playerTwoTurn");
   
 }
 
+function closePlayerMenu()
+{
+		if(!playerOne[0])
+		{
+			playerOne[0] = "Player One";
+		}
+		
+		if(!playerTwo[0])
+		{
+			playerTwo[0] = "Player Two";
+		}
+				
+		document.getElementById("flip-back").innerHTML = "" + playerOne[0] + " VS " +  playerTwo[0];
+		saveMPlayerDataToStorage();
+		
+		hideMenu(document.getElementById("playerNameD"));
+		updatePlayer();
+}
+
+//saves player name when multiplayer selected
 function savePlayersName()
 {
 		var temp = document.getElementById("playerOneName").value;
@@ -136,20 +183,12 @@ function savePlayersName()
 		{
 			playerTwo[0] = "Player Two";
 		}
-		
-		
-		if(playerTurn > 1)
-		{	
-			document.getElementById("turnArea").innerHTML = playerTwo[0] + " turn!!!";
-		}
-		else
-		{
-			document.getElementById("turnArea").innerHTML = playerOne[0] + " turn!!!";
-		}
-		
+				
+		document.getElementById("flip-back").innerHTML = "" + playerOne[0] + " VS " +  playerTwo[0];
 		saveMPlayerDataToStorage();
 		
 		hideMenu(document.getElementById("playerNameD"));
+		updatePlayer();
 		
 		//alert("Player One: " + playerOne[0] + "\n Player Two: " + playerTwo[0]);
 	}
@@ -292,10 +331,9 @@ function cancel()
 }
 	
 	
-
+//carry out animation for saving a name (single player) 
 function saveName()
-{
-		
+{		
 	$('#saveName').animate({marginTop:-200}, 600);
 	$('#saveName').hide();
 	$('#subName').show();	
@@ -308,9 +346,10 @@ function saveGame()
     var game = document.getElementById("game").innerHTML;
     var flips = numTries;
     var gameData;
-    if(isMultiPlayer())
+    
+    if(gameMode > 1)
     {
-    	gameData = [0, game, P, 2, playerTurn];
+    	gameData = [0, game, P, 2, playerTurn, turnState];
     	saveMPlayerDataToStorage();
     }
     else
@@ -328,11 +367,18 @@ function saveGame()
 	}
 }
 
-
+//change class name of card 
 function changeClassName(e,c)
 {
     e.className="w "+c;
 }
+
+//change class name of turn display 
+function updateClassName(object, cName)
+{
+    object.className= cName;
+}
+
 
 // get out a random element from an array
 function R(a)
@@ -351,6 +397,8 @@ function announceWinner()
 		document.getElementById("winner").innerHTML = "" + playerTwo[0] + " WON!!!";
 	}
 }
+
+//rotate the current player when called  
 function changePlayer()
 {
 	if(playerTurn > 1)
@@ -362,17 +410,27 @@ function changePlayer()
 		playerTurn = 2;
 	}
 	turnState = 0;
+	 updatePlayer();
+}
+
+//display the player switch to the user
+function updatePlayer()
+{
+	playerTwoTurn.innerHTML = playerTwo[0];
+	playerOneTurn.innerHTML = playerOne[0];
 	
 	if(playerTurn > 1)
 		{	
-		document.getElementById("turnArea").innerHTML = playerTwo[0] + " turn!!!";
+			//document.getElementById("turnArea").innerHTML = playerTwo[0] + " turn!!!";
+			updateClassName(playerTwoTurn, "activePlayer");
+			updateClassName(playerOneTurn, "inactivePlayer");
 		}
 		else
 		{
-			document.getElementById("turnArea").innerHTML = playerOne[0] + " turn!!!";
+			//document.getElementById("turnArea").innerHTML = playerOne[0] + " turn!!!";
+			updateClassName(playerOneTurn, "activePlayer");
+			updateClassName(playerTwoTurn, "inactivePlayer");
 		}
-		flash();
-		//alert("Player Changed");
 }
 
 
@@ -401,7 +459,7 @@ function updateScoreBoard()
      */
     function Flip(t)
     {
-      if(numTries > 0 || gameMode > 1)
+      if((numTries > 0 || gameMode > 1) && gameOver > 0)
 		{	
 			//check if multiplayer and less than two flips		
 			//if(gameMode > 1 && turnState < 2)
@@ -499,6 +557,7 @@ function updateScoreBoard()
 					{
 						announceWinner();
 					}
+					gameOver = 0;
 					applause.play();
 				}
 					
@@ -563,13 +622,5 @@ function displayDeck()
     // add it to the DOM
 	
     currentGame.innerHTML = deckArea +'</div>';
-
-}
-
-function flash(){
-    var f = document.getElementById('turnArea');
-    setInterval(function() {
-        f.style.display = (f.style.backgroundColor == 'red' ? '' : 'white');
-    }, 100);
 
 }
