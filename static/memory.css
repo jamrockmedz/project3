@@ -1,24 +1,23 @@
 	* {
 		margin: auto;		
 	}
+	
   body{
-      background:turquoise;
-      margin:auto; 
+        background:turquoise;
+        margin:auto; 
   	}
   	
   	@media screen and (min-width: 960px) {
- 	body{
-        
-      width: 960px;
-		text-align: center;
+ 	body{        
+            width: 960px;
+    	    text-align: center;
     	}
  	}
  	
  	@media screen and (max-width: 959px) {
  	body{
-        
-      width: 90%;
-		text-align: center;
+            width: 90%;
+		    text-align: center;
     	}
  	}
 	
