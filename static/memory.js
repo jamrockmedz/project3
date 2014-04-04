@@ -378,9 +378,10 @@ function changeClassName(e,c)
 }
 
 //change class name of turn display 
-function updateClassName(object, cName)
+function updateClass(object, color)
 {
-    object.className= cName;
+   object.style.boxShadow = "0 0 2px 2px grey inset, 0 0 2px 2px " + color;
+	object.style.boxShadow = "0 0 2px 2px grey inset, 0 0 2px 2px " + color;
 }
 
 
@@ -524,9 +525,29 @@ function updateScoreBoard()
 						{
 							//if current card match with with visible card player retain turn
 							match.play();
-							if(gameMode > 1){turnState = 0;updateScoreBoard();}
+							if(gameMode > 1)
+							{
+								turnState = 0;
+								updateScoreBoard();
+								if(playerTurn > 1)
+								{
+									updateClass(x, "green");
+									updateClass(t, "green");
+									//x.style.boxShadow = "0 0 2px 2px grey inset, 0 0 2px 2px green";
+									//t.style.boxShadow = "0 0 2px 2px grey inset, 0 0 2px 2px green";
+								}
+								else
+								{
+									updateClass(x, "red");
+									updateClass(t, "red");
+									//x.style.boxShadow = "0 0 2px 2px grey inset, 0 0 2px 2px red";
+									//t.style.boxShadow = "0 0 2px 2px grey inset, 0 0 2px 2px red";
+								}
+							}
+							
 							changeClassName(x,"p");
 							changeClassName(t,"p");
+							
 							pairedCards.push(x);
 							pairedCards.push(t);
 							P--;
@@ -566,12 +587,7 @@ function updateScoreBoard()
 				}
 				
 				if(gameMode > 1 && turnState > 1){changePlayer();}
-				
-				//todo
-				//
-				//
-				//
-				
+						
 				if(!P)
 				{
 					if(gameMode < 2)

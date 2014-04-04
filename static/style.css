@@ -11,6 +11,18 @@
 	display:none;
 }
 
+.p1 .cardfront
+{
+	box-shadow: 0 0 2px 2px #lll inset, 0 0 2px 2px green;
+	-webkit-box-shadow: 0 0 2px 2px #lll inset, 0 0 2px 2px green;
+}
+
+.p2 .cardfront
+{
+	box-shadow: 0 0 2px 2px #lll inset, 0 0 2px 2px red;
+	-webkit-box-shadow: 0 0 2px 2px #lll inset, 0 0 2px 2px red;
+}
+
 #playerNameD div h2
 {
     font-size: 1em;

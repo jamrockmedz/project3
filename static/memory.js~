@@ -39,8 +39,8 @@ function newGame()
     	playerOne[1] = 0;
     	playerTwo[1] = 0;
     	turnState = 0;
-    	document.getElementById("playerOneScore").innerHTML = "" + playerOne[0] +" Score: " + playerOne[1];
-		document.getElementById("playerTwoScore").innerHTML = "" + playerTwo[0] +" Score: " + playerTwo[1];
+    	document.getElementById("playerOneScore").innerHTML = "";
+		document.getElementById("playerTwoScore").innerHTML = "";
     	updatePlayer();
     }
     else
@@ -164,24 +164,24 @@ function closePlayerMenu()
 function savePlayersName()
 {
 		var temp = document.getElementById("playerOneName").value;
-		if(temp.length > 1)
-		{
-			playerOne[0] = temp;
-		}
-		else
+		if(temp == 'Player One Name...' || temp.length < 1)
 		{
 			playerOne[0] = "Player One";
+		}
+		else 
+		{
+			playerOne[0] = temp;
 		}
 		
 		temp = document.getElementById("playerTwoName").value;
 		
-		if(temp.length > 1)
-		{
-			playerTwo[0] = temp;
-		}
-		else
+		if(temp == 'Player Two Name...' || temp.length < 1)
 		{
 			playerTwo[0] = "Player Two";
+		}
+		else 
+		{
+			playerTwo[0] = temp;
 		}
 				
 		document.getElementById("flip-back").innerHTML = "" + playerOne[0] + " VS " +  playerTwo[0];
@@ -240,7 +240,9 @@ function hideMenu(menu)
 function setUpSinglePlayerMode()
 {
 	hideMenu(document.getElementById("gameMode"));	
-	document.getElementById("scoreBoard").style.display = "node";
+	document.getElementById("scoreBoard").style.display = "none";
+	playerOneTurn.style.display = "none";
+	playerTwoTurn.style.display = "none";
 	gameMode = 1;	
 	createSinglePlayerGame();
 }
@@ -253,6 +255,8 @@ function setUpTwoPlayerMode(){
 		gameMode = 2;
 		createTwoPlayerGame();
 		document.getElementById("scoreBoard").style.display = "inherit";
+		playerOneTurn.style.display = "inherit";
+		playerTwoTurn.style.display = "inherit";
 			
 	}
 	
@@ -278,7 +282,7 @@ function setUpTwoPlayerMode(){
 		}
 		else
 		{ 
-	   	 loadGame(); 
+			loadGame(); 
 		}
 		
 	}
@@ -374,9 +378,10 @@ function changeClassName(e,c)
 }
 
 //change class name of turn display 
-function updateClassName(object, cName)
+function updateClass(object, color)
 {
-    object.className= cName;
+   object.style.boxShadow = "0 0 2px 2px grey inset, 0 0 2px 2px " + color;
+	object.style.boxShadow = "0 0 2px 2px grey inset, 0 0 2px 2px " + color;
 }
 
 
@@ -390,11 +395,16 @@ function announceWinner()
 {
 	if(playerOne[1] > playerTwo[1])
 	{
-		document.getElementById("winner").innerHTML = "" + playerOne[0] + " WON!!!";
+		//document.getElementById("winner").innerHTML = "" + playerOne[0] + " WON!!!";
+		document.getElementById("flip-front").innerHTML =  "" + playerOne[0] + " WON!!!";
+	}
+	else if(playerOne[1] == playerTwo[1])
+	{
+		document.getElementById("flip-front").innerHTML =  "Match Tie!!!";
 	}
 	else
 	{
-		document.getElementById("winner").innerHTML = "" + playerTwo[0] + " WON!!!";
+		document.getElementById("flip-front").innerHTML =  "" + playerTwo[0] + " WON!!!";
 	}
 }
 
@@ -416,20 +426,27 @@ function changePlayer()
 //display the player switch to the user
 function updatePlayer()
 {
-	playerTwoTurn.innerHTML = playerTwo[0];
-	playerOneTurn.innerHTML = playerOne[0];
+	if(playerTwo[0] && playerOne[0])
+	{
+		playerTwoTurn.innerHTML = "<div>" + playerTwo[0] + "</div>";
+		playerOneTurn.innerHTML = "<div>" + playerOne[0] + "</div>";
+	}
 	
 	if(playerTurn > 1)
 		{	
 			//document.getElementById("turnArea").innerHTML = playerTwo[0] + " turn!!!";
-			updateClassName(playerTwoTurn, "activePlayer");
-			updateClassName(playerOneTurn, "inactivePlayer");
+			//updateClassName(playerTwoTurn, "green");
+			//updateClassName(playerOneTurn, "red");
+			playerTwoTurn.style.webkitAnimation = "blink 3s 0s infinite";
+			playerOneTurn.style.webkitAnimation = "stop 3s 0s infinite";
 		}
 		else
 		{
 			//document.getElementById("turnArea").innerHTML = playerOne[0] + " turn!!!";
-			updateClassName(playerOneTurn, "activePlayer");
-			updateClassName(playerTwoTurn, "inactivePlayer");
+			//updateClassName(playerOneTurn, "green");
+			//updateClassName(playerTwoTurn, "red");
+			playerOneTurn.style.webkitAnimation = "blink 3s 0s infinite";
+			playerTwoTurn.style.webkitAnimation = "stop 3s 0s infinite";
 		}
 }
 
@@ -508,12 +525,35 @@ function updateScoreBoard()
 						{
 							//if current card match with with visible card player retain turn
 							match.play();
-							if(gameMode > 1){turnState = 0;updateScoreBoard();}
+							if(gameMode > 1)
+							{
+								turnState = 0;
+								updateScoreBoard();
+								if(playerTurn > 1)
+								{
+									updateClass(x, "green");
+									updateClass(t, "green");
+									x.style.boxShadow = "0 0 2px 2px grey inset, 0 0 2px 2px green";
+									t.style.boxShadow = "0 0 2px 2px grey inset, 0 0 2px 2px green";
+								}
+								else
+								{
+									updateClass(x, "red");
+									updateClass(t, "red");
+									x.style.boxShadow = "0 0 2px 2px grey inset, 0 0 2px 2px red";
+									t.style.boxShadow = "0 0 2px 2px grey inset, 0 0 2px 2px red";
+								}
+							}
+							
 							changeClassName(x,"p");
 							changeClassName(t,"p");
+							
 							pairedCards.push(x);
 							pairedCards.push(t);
 							P--;
+						}
+						else{
+						changeClassName(t,"v");
 						}
 					}
 					else
@@ -521,6 +561,7 @@ function updateScoreBoard()
 						//if(gameMode > 1){turnState++;}
 						changeClassName(x,"");
 					}
+					setTimeout(resetCards,500);
 				
 				}
 				//checks if two cards already visible
@@ -530,23 +571,23 @@ function updateScoreBoard()
 					if(x != t && y != t)
 					{
 						flipSound.play();
+						updateTries();
 						changeClassName(t,"v");
 						changeClassName(x,"");
 						changeClassName(y,"");
+						if(gameMode > 1){turnState++;}
 						
-						updateTries();
 					}
 					else
 					{
 						changeClassName(x,"");
 						changeClassName(y,"");
 					}
-					
-					if(gameMode > 1){turnState++;}
-					
+										
 				}
 				
 				if(gameMode > 1 && turnState > 1){changePlayer();}
+						
 				if(!P)
 				{
 					if(gameMode < 2)
@@ -562,7 +603,9 @@ function updateScoreBoard()
 				}
 					
 			}
-	}
+			
+			
+		}
 		else
 		{
 			if(gameMode < 2){
@@ -570,6 +613,16 @@ function updateScoreBoard()
 				boo.play();
 				}
 			
+		}
+		
+}
+
+function resetCards()
+{
+	var temp = currentGame.querySelectorAll(".v");
+	for(var i = 0; i < temp.length; i++)			
+			{
+				changeClassName(temp[i],"");
 			}
 	
 }

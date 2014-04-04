@@ -1,7 +1,7 @@
 #scoreBoard
 {
 	width: 200px;
-	height:100px;
+	margin-top: 110px;
 	text-align: center;
 	position: absolute;
 	padding: 5px 20px 13px 20px;
@@ -11,36 +11,51 @@
 	display:none;
 }
 
-#area #playerOneTurn, #area  #playerTwoTurn {
-	
-float: left;
+.p1 .cardback
+{
+	box-shadow: 0 0 2px 2px #lll inset, 0 0 2px 2px green;
+	-webkit-box-shadow: 0 0 2px 2px #lll inset, 0 0 2px 2px green;
+}
+
+.p2 .cardback
+{
+	box-shadow: 0 0 2px 2px #lll inset, 0 0 2px 2px red;
+	-webkit-box-shadow: 0 0 2px 2px #lll inset, 0 0 2px 2px red;
+}
+
+#playerNameD div h2
+{
+    font-size: 1em;
+}
+ #playerOneTurn,   #playerTwoTurn {
 display: inline-block;
-width: 48%;
-height: 90%;
-border: blue solid 1px;
-margin: auto;
+width: 200px;
+position: relative;
+height: 200px;
+border-radius: 100%;
+margin-top: -45%;
+display: none;
+}
+ #playerOneTurn > div ,   #playerTwoTurn > div{
+	vertical-align: middle;
+	margin-top: 88px;
+	color: #fff;
 }
 
-#area #playerOneTurn
+
+#turnArea
 {
-	border-top-left-radius: 8px;
-	border-bottom-left-radius: 8px;
+   
 }
 
-#area #playerTwoTurn
+#playerOneTurn
 {
-	border-top-right-radius: 8px;
-	border-bottom-right-radius: 8px;
+float:left;
 }
 
-.activePlyer
+#playerTwoTurn
 {
-	background: green;
-}
-
-.inactivePlayer
-{
-	background: red;	
+	float:right;
 }
 
 #scoreBoard #area
@@ -58,7 +73,7 @@ margin: auto;
 	font-size: 90%;
 }
 
-#turnArea, #playerOneScore, #playerTwoScore, #winner
+#playerOneScore, #playerTwoScore, #winner
 {
 	border-radius: 10px;
 	height: 20px;
@@ -81,11 +96,9 @@ li a{
 }
 
 
-/* ROLL LINKS */
 .rollable-link {
     display: inline-block;
     overflow: hidden;
-
     vertical-align: middle;
 
     -webkit-perspective: 600px;
@@ -96,22 +109,19 @@ li a{
     -webkit-perspective-origin: 50% 50%;
        -moz-perspective-origin: 50% 50%;
        -ms-perspective-origin: 50% 50%;
-       perspective-origin: 50% 50%;
-       
+       perspective-origin: 50% 50%;       
 }
 
 .rollable-link {
-
-text-decoration:none;
-width: 100%;
-height:100%;
+    text-decoration:none;
+    width: 100%;
+    height:100%;
 }
 
 .rollable-link span {
     display: block;
     position: relative;
-    padding: 0 2px;
-
+    
     -webkit-transition: all 400ms ease;
        -moz-transition: all 400ms ease;
        -ms-transition: all 400ms ease;
@@ -129,7 +139,7 @@ height:100%;
 }
 .rollable-link:hover span {
         background: rgba(56, 185, 235, 0.67);
-        height: 38px;
+        height: 100%;
         -webkit-transform: translate3d( 0px, 0px, -30px ) rotateX( 90deg );
            -moz-transform: translate3d( 0px, 0px, -30px ) rotateX( 90deg );
            -ms-transform: translate3d( 0px, 0px, -30px ) rotateX( 90deg );
@@ -147,7 +157,6 @@ height:100%;
 
     color: #fff;
     background: rgba(56, 185, 235, 0.67);
-
     -webkit-transform-origin: 50% 0%;
        -moz-transform-origin: 50% 0%;
        -ms-transform-origin: 50% 0%;
@@ -168,7 +177,11 @@ height:100%;
 	vertical-align: middle;
 	border-radius: 5px;
 	}
-	
+
+.gameModeDialog h2
+{
+    font-size: 1em;
+}
 .gameModeDialog {
 	position: fixed;
 	font-family: Arial, Helvetica, sans-serif;
@@ -194,7 +207,7 @@ height:100%;
  
 .gameModeDialog > div {
 	width: 200px;
-	height:100px;
+	height:120px;
 	text-align: center;
 	position: relative;
 	margin: 10% auto;
